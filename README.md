@@ -1,11 +1,11 @@
-# 移动 OCR 校对器的块三角 Jacobian 与编辑补偿
+# 手机多路张量的共享指数变换与误差配额
 
-项目资料使用可独立读写的 JSON。Node.js 22.23.4 下运行 `npm ci --offline` 准备环境，然后运行 `npm run inspect` 检查合成数据字段，运行 `npm test` 校验样本引用及格式。
+这里的块指数和低位宽特征是用于设备联调的合成资料。使用 Node.js 22。运行 `npm ci --offline` 核对依赖锁，`npm run inspect` 查看资料字段，`npm test` 检查资料格式及相互引用。检视脚本只读取元数据。
 
-## 输入契约
+## 数据格式
 
-分层响应 δy_i = forcing_i + slope_i * Σ_j Jij δy_j，j 只能来自早层。矩阵块为 [toWidth][fromWidth]，码为 bfloat16 位模式或直接值。锁定项为零，区间中所有独立斜率均为可能值。栏目约束分别给每条显示槽允许的偏移和相邻槽调整后最小间距。两个显示槽可以引用同一源项，按同一次计算解释。较高精度资料可逐项取得，覆盖后仍用同一布局阈值。设备工作区计 Jacobian 解码缓存、响应内部状态及待领取的补偿。 encoding 缺省为直接实数，bf16 表示无符号 16 位数，作为 IEEE 单精度浮点比特模式的高 16 位，补零为低 16 位。
+BFP 是有符号码 m 乘 2^e。旧布局 x 连续再按 c，组的 mantissa 宽 8，指数 signed i8，码 −128 可以是数字，缺失由单独 valid 平面表示。目标块走 y、x 空间内优先顺序、每块固定一组 e，正常 6 位 mantissa，扩展 10 位并消耗 extBytes。中间二进制有理数近偶舍入，不预设合并方式。每输出 bfp 输出块误差看浮点实值 L∞，reduce 的归约是对同一通道块的有符号系数 w 线性乘和，sign 群包括必须保住符号的读口，零是单独一类。给每个目标块候选指数区间和设备字节预算。优先目标先按 priority 等级做字典序可用性选择，同一等级无唯一选择时可报告实际选择。 正式布局把目标块定义为同一通道相邻行展平后每 24 个位置，源每行按 x 连续，源和目标跨行的余项都是真实边界。每个候选 e 的误差、符号保证都取源区间端点包络。同指数的候选只需返回任一可行精度；扩展槽按实际额外 4 位 mantissa 宽乘该块有效位置计算。 实际块的 e 候选按目标块线性编号除以 candidates 长度所得余数选行，对应 blockAbs 同序配额。标定块小样本中的左至右下标对各自源记录。orig 值读取精确码，饱和区间按 mark 的范围单位。 protectedReadSets 各项为 reads 的行号与同一通道内空间展平位置。markBounds 各项为 [channel, spatialOffset, loMantissa, hiMantissa]，先用实际源指数转实数。跨存储块的同一符号读口不可分两次对外确认。
 
-## 资料读取
+## 取数
 
-样本位于 `inputs/session.json`，其中 `events` 是按到达顺序记下的操作，编号从零开始。layout、preview 引用布局修订；change 给出源条目与 forcing 值；refine 选择可取得精细值的源条目。
+`inputs/bfp-wire.json` 保存标定、规格和调用记录。记录中的范围除明确说明外从零开始，使用半开区间。批量数组按调用记录列出的顺序交付。blockFpPlane(channel,row) 读有符号码、块指数及有效位，blockFpOffset(channel) 读该通道的二进制有理偏置。
