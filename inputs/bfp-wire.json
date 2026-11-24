@@ -206,5 +206,35 @@
       -2,
       3
     ]
+  ],
+  "readBounds": [
+    {
+      "rule": "sign",
+      "id": "lane-a",
+      "coefficientScale": [
+        1,
+        -7
+      ],
+      "relativeEnergy": null
+    },
+    {
+      "rule": "linear-error",
+      "id": "motor-residual",
+      "coefficientScale": [
+        1,
+        -4
+      ],
+      "maxAbs": 0.00390625,
+      "relativeEnergy": 0.05
+    },
+    {
+      "rule": "sign",
+      "id": "lane-b",
+      "coefficientScale": [
+        1,
+        -9
+      ],
+      "relativeEnergy": null
+    }
   ]
 }

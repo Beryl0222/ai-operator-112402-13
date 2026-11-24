@@ -11,4 +11,7 @@ test('块指数和低位宽特征的格式与关联', () => {
   assert.ok(data.extBytes<16*96*128);
   assert.ok(data.reads.some(([,w])=>w.some(x=>x<0)&&w.some(x=>x>0)));
   assert.ok(data.scale.every(v=>Number.isInteger(v[1])));
+  assert.equal(data.readBounds.length,data.protectedReadSets.length);
+  assert.ok(data.protectedReadSets[0][1].some(i=>data.protectedReadSets[1][1].includes(i)));
+  assert.ok(data.readBounds.find(r=>r.rule==='linear-error').maxAbs>0);
 });
