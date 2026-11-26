@@ -3,11 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./mjs": "./index.mjs",
+    "./solve": "./solve.mjs",
+    "./package": "./src/package.mjs"
+  },
   "engines": {
     "node": "22.x"
   },
   "scripts": {
+    "start": "node solve.mjs",
     "inspect": "node inspect.mjs",
+    "solve": "node solve.mjs",
+    "build": "node solve.mjs",
+    "verify": "node verify.mjs",
     "test": "node --test"
   }
 }

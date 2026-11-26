@@ -1,0 +1,77 @@
+{
+  "packageFormat": "block-fp-interchange-package/v1",
+  "constantsVersion": "bfp-constants-ef0def95e59c2476",
+  "stats": {
+    "totalBlocks": 8192,
+    "certifiedBlocks": 221,
+    "rejectedBlocks": 7971,
+    "extendedBlocks": 252,
+    "usedExtBytes": 3024,
+    "extBudgetBytes": 3024,
+    "extRemainingBytes": 0,
+    "acceptedRegions": 0,
+    "signProtectedRegions": 16,
+    "rejectedRegions": 16,
+    "usablePackageReads": 0,
+    "signProtectedReads": 47,
+    "totalReadReports": 48,
+    "scratchBytes": 98304,
+    "scratchRequiredBytes": 2304,
+    "scratchSufficient": true
+  },
+  "channel0ReadsAfterSourceRelease": [
+    {
+      "id": "lane-a",
+      "real": -0.0042724609375,
+      "sign": "negative",
+      "fixedPoint": {
+        "mantissa": "-140",
+        "exponent": -15
+      },
+      "evidenceSign": true
+    },
+    {
+      "id": "motor-residual",
+      "real": -0.005859375,
+      "sign": "negative",
+      "fixedPoint": {
+        "mantissa": "-24",
+        "exponent": -12
+      },
+      "evidenceSign": true
+    },
+    {
+      "id": "lane-b",
+      "real": 0.0025634765625,
+      "sign": "positive",
+      "fixedPoint": {
+        "mantissa": "21",
+        "exponent": -13
+      },
+      "evidenceSign": true
+    }
+  ],
+  "exampleBlock": {
+    "id": "c0-b0",
+    "layoutId": "spatial-row-major-block-v1",
+    "packageFormat": "block-fp-interchange-package/v1",
+    "constantsVersion": "bfp-constants-ef0def95e59c2476",
+    "exponent": -8,
+    "bits": 10,
+    "precision": "extended10",
+    "certified": false,
+    "status": "dependency-region-rejected"
+  },
+  "constrainedSignReads": [
+    {
+      "type": "protected-sign",
+      "channel": 15,
+      "setIndex": 1,
+      "id": "motor-residual",
+      "rule": "linear-error",
+      "sourceSign": "negative",
+      "outputSign": "positive",
+      "regionId": "channel-15-region-0-1-2"
+    }
+  ]
+}
